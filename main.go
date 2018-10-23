@@ -17,7 +17,6 @@ const (
 func main() {
 	handleRC4()
 	handleTEA()
-
 }
 
 func handleRC4() {
@@ -37,7 +36,8 @@ func handleRC4() {
 
 	c1.Apply(encrypted, src)
 	c2.Apply(decrypted, encrypted)
-	fmt.Printf("Decrypted text RC4: %s\n", string(decrypted))
+
+	noop(string(decrypted))
 
 	end := time.Now().UnixNano()
 	fmt.Printf("RC4 (end) - %s", getTime(end))
@@ -64,7 +64,8 @@ func handleTEA() {
 	method.Apply(dst, src, []byte{2, 2, 2, 2, 2, 2, 2, 2})
 	method.Apply(src, dst, []byte{2, 2, 2, 2, 2, 2, 2, 2})
 
-	fmt.Printf("Decrypted text TEA: %s\n", string(tea.JoinBytes(src)))
+	decryptedText := string(tea.JoinBytes(src))
+	noop(decryptedText)
 
 	end := time.Now().UnixNano()
 	fmt.Printf("TEA (end) - %s", getTime(end))
@@ -73,4 +74,8 @@ func handleTEA() {
 
 func getTime(t int64) string {
 	return fmt.Sprintf("Time: %d\n", t)
+}
+
+func noop(i interface{}) {
+	// Do nothing
 }
